@@ -1,0 +1,34 @@
+name: Docker Build and Push
+
+on:
+  push:
+    branches:
+      - main  # Branche sur laquelle déclencher l'action
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Le système d'exploitation sur lequel s'exécutera le job
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Action pour cloner le repository
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1  # Configurer Docker Buildx
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-image-name .  # Construire l'image Docker
+          # Remplace `my-image-name` par le nom que tu souhaites
+
+      - name: Push Docker image
+        run: |
+          docker push my-image-name  # Pousser l'image vers DockerHub ou autre registre
