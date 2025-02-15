@@ -17,7 +17,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
       
       - name: Build Docker image
-        run: docker build -t junior107r/projet_isil3:latest .
+        run: docker build -t junior107/projet_isil3:latest .
       
       - name: Push Docker image to Docker Hub
         run: docker push junior107/projet_isil3:latest
