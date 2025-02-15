@@ -20,4 +20,4 @@ jobs:
         run: docker build -t utilisateur/projet-isil3:latest .
       
       - name: Push Docker image to Docker Hub
-        run: docker push utilisateur/projet-isil3:latest
+        run: docker push junior107/projet-isil3:latest
