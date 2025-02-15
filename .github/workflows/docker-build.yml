@@ -1,34 +1,23 @@
-name: Docker Build and Push
+name: Build and Push Docker Image
 
 on:
   push:
     branches:
-      - main  # Branche sur laquelle déclencher l'action
+      - version2
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Le système d'exploitation sur lequel s'exécutera le job
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Action pour cloner le repository
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1  # Configurer Docker Buildx
-
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
+        uses: actions/checkout@v3
+      
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+      
       - name: Build Docker image
-        run: |
-          docker build -t my-image-name .  # Construire l'image Docker
-          # Remplace `my-image-name` par le nom que tu souhaites
-
-      - name: Push Docker image
-        run: |
-          docker push my-image-name  # Pousser l'image vers DockerHub ou autre registre
+        run: docker build -t utilisateur/projet-isil3:latest .
+      
+      - name: Push Docker image to Docker Hub
+        run: docker push utilisateur/projet-isil3:latest
